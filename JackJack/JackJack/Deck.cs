@@ -25,13 +25,8 @@ namespace JackJack
                 int cardValue = i % 13 + 1;
                 SuitType cardSuit = (SuitType)(i%4);
                 _cards.Add(new Card(cardValue, cardSuit));
-                //Console.WriteLine(cardValue + "" + cardSuit);
             }
             Shuffle();
-            foreach (var card in _cards)
-            {
-                Console.WriteLine(card.ToString());
-            }
         }
 
         private static Random rng = new Random();
@@ -43,15 +38,17 @@ namespace JackJack
             {
                 n--;
                 int k = rng.Next(n + 1);
-                Card value = _cards[k];
+                Card c = _cards[k];
                 _cards[k] = _cards[n];
-                _cards[n] = value;
+                _cards[n] = c;
             }
         }
 
         public Card Draw()
         {
-            return null;
+            Card c = _cards[0];
+            _cards.Remove(_cards.First());
+            return c;
         }
     }
 }

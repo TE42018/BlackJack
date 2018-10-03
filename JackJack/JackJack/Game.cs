@@ -23,6 +23,14 @@ namespace JackJack
             Player = new Player();
             Dealer = new Player();
             Deck = new Deck(4);
+
+
+            Player.Hand.Add(Deck.Draw());
+            Player.Hand.Add(Deck.Draw());
+            Player.Hand.Add(Deck.Draw());
+            Console.WriteLine(Player.BestValue);
+            //Console.WriteLine(Player.LowValue);
+            //Console.WriteLine(Player.Hand[0] + " " + Player.Hand[1]);
         }
 
         public void PlayerDraw()

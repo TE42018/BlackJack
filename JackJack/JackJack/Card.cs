@@ -10,13 +10,13 @@ namespace JackJack
     {
         public int Value { get; set; }
         public SuitType Suit { get; set; }
-        public int BlackJackValue { get; set; }
+        public int BlackJackValue { get { return Math.Min(Value, 10); } }
 
         public Card(int value, SuitType suit)
         {
             Value = value;
             Suit = suit;
-            BlackJackValue = Value; 
+            //BlackJackValue = Value; 
         }
 
         public override string ToString()
