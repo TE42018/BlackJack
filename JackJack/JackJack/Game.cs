@@ -56,6 +56,11 @@ namespace JackJack
                     Status = GameStatus.Lost;
                     return;
                 }
+                if(Player.BestValue == 21)
+                {
+                    Status = GameStatus.Won;
+                    return;
+                }
 
                 Console.WriteLine($"You have:{Player.ToString()} | {Player.BestValue}");
                 Console.WriteLine("------------------");
