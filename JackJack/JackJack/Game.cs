@@ -15,12 +15,14 @@ namespace JackJack
 
         public Game()
         {
-
+            Reset();
         }
 
         public void Reset()
         {
-
+            Player = new Player();
+            Dealer = new Player();
+            Deck = new Deck(4);
         }
 
         public void PlayerDraw()

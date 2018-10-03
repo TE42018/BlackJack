@@ -13,22 +13,45 @@ namespace JackJack
 
         public Deck(int nrOfDecks)
         {
-
+            _nrOfDecks = nrOfDecks;
+            ResetAndShuffle();
         }
 
         public void ResetAndShuffle()
         {
-
+            _cards = new List<Card>();
+            for (int i = 0; i < _nrOfDecks * 52; i++)
+            {
+                int cardValue = i % 13 + 1;
+                SuitType cardSuit = (SuitType)(i%4);
+                _cards.Add(new Card(cardValue, cardSuit));
+                //Console.WriteLine(cardValue + "" + cardSuit);
+            }
+            Shuffle();
+            foreach (var card in _cards)
+            {
+                Console.WriteLine(card.ToString());
+            }
         }
+
+        private static Random rng = new Random();
 
         public void Shuffle()
         {
-
+            int n = _cards.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                Card value = _cards[k];
+                _cards[k] = _cards[n];
+                _cards[n] = value;
+            }
         }
 
-        public void Draw()
+        public Card Draw()
         {
-
+            return null;
         }
     }
 }
