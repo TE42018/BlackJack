@@ -10,11 +10,11 @@ namespace JackJack
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine("Hello World!");
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
             Game game = new Game();
-            
-            //Card c = new Card(1, SuitType.Diamond);
-            //Console.WriteLine(c.ToString());
+
+            //game.PlayerDraw();
+
             Console.ReadLine();
         }
     }

@@ -8,9 +8,9 @@ namespace JackJack
 {
     public enum SuitType
     {
-        Club,
-        Diamond,
-        Heart,
-        Spade
+        Club = 2663,
+        Diamond = 2666,
+        Heart = 2665,
+        Spade = 2660
     }
 }

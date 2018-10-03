@@ -50,5 +50,10 @@ namespace JackJack
             _cards.Remove(_cards.First());
             return c;
         }
+
+        public void Insert(Card card)
+        {
+            _cards.Add(card);
+        }
     }
 }

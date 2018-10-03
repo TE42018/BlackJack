@@ -20,27 +20,92 @@ namespace JackJack
 
         public void Reset()
         {
+            Console.Clear();
+            Console.WriteLine("Welcome to JackJack\n");
+
             Player = new Player();
             Dealer = new Player();
             Deck = new Deck(4);
 
+            Status = GameStatus.Playing;
 
-            Player.Hand.Add(Deck.Draw());
-            Player.Hand.Add(Deck.Draw());
-            Player.Hand.Add(Deck.Draw());
-            Console.WriteLine(Player.BestValue);
-            //Console.WriteLine(Player.LowValue);
-            //Console.WriteLine(Player.Hand[0] + " " + Player.Hand[1]);
+            Dealer.Hand.Add(Deck.Draw());
+            
+            Console.WriteLine("The dealer has:" + Dealer.ToString() + " | " + Dealer.HighValue);
+            Console.WriteLine("~~~~~~~~~~~~~~~~~~~");
+            PlayerDraw();
+            switch (Status)
+            {
+                case GameStatus.Won: Console.WriteLine("The dealer got {0} and lost", Dealer.HighValue); break;
+                case GameStatus.Lost: Console.WriteLine("You got {0} and lost", Player.BestValue); break;
+                case GameStatus.Tie: Console.WriteLine("You are both losers!"); break;
+
+            }
         }
 
         public void PlayerDraw()
         {
+            Player.Hand.Add(Deck.Draw());
 
+            char key;
+            do
+            {
+                Player.Hand.Add(Deck.Draw());
+                if (Player.BestValue > 21)
+                {
+                    Status = GameStatus.Lost;
+                    return;
+                }
+
+                Console.WriteLine($"You have:{Player.ToString()} | {Player.BestValue}");
+                Console.WriteLine("------------------");
+                Console.Write("(H)it | (S)top > ");
+
+                do {
+                    key = (char)Console.ReadKey().Key;
+                } while (key != 'H' && key != 'S');
+                Console.WriteLine("\n");
+            } while (key == 'h' || key == 'H');
+            DealerDraw();
         }
 
         public void DealerDraw()
         {
+            do
+            {
+                Dealer.Hand.Add(Deck.Draw());
+                System.Threading.Thread.Sleep(2000);
 
+                if (Dealer.HighValue > 21)
+                {
+                    Status = GameStatus.Won;
+                    return;
+                }
+                else if (Dealer.HighValue > Player.BestValue)
+                {
+                    Status = GameStatus.Lost;
+                    return;
+                }
+                else if (Dealer.HighValue < Player.BestValue)
+                {
+                    Status = GameStatus.Won;
+                    return;
+                }
+                else if (Dealer.HighValue == Player.BestValue && Dealer.HighValue > 16 && Dealer.HighValue < 20)
+                {
+                    Status = GameStatus.Lost;
+                    return;
+                }
+                else if (Dealer.HighValue == Player.BestValue && Dealer.HighValue == 20)
+                {
+                    Status = GameStatus.Tie;
+                    return;
+                }
+                
+
+                Console.WriteLine($"The dealer has:{Dealer.ToString()} | {Dealer.HighValue}");
+            } while (Dealer.HighValue < 17);
+            //Hit until HighValue >= 17
         }
     }
 }

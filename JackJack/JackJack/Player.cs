@@ -17,7 +17,7 @@ namespace JackJack
         private int GetBestValue(List<Card> hand)
         {
             int sum = 0;
-            
+
             hand.Sort((c1, c2) => c2.BlackJackValue.CompareTo(c1.BlackJackValue));
             foreach (var c in hand)
             {
@@ -30,7 +30,7 @@ namespace JackJack
                 else
                     sum += bjv;
 
-                Console.WriteLine(c.ToString());
+                //Console.WriteLine(c.ToString());
             }
 
             return sum;
@@ -45,12 +45,18 @@ namespace JackJack
         {
             Hand = new List<Card>();
             
-            Hand.Sum(item => (item.Value));
+            //Hand.Sum(item => (item.Value));
         }
 
         public override string ToString()
         {
-            return base.ToString();
+            string playerString = "";
+
+            foreach (var c in Hand)
+            {
+                playerString += $" {c.ToString()}";
+            }
+            return playerString;
         }
     }
 }

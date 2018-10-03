@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace JackJack
@@ -16,13 +18,14 @@ namespace JackJack
         {
             Value = value;
             Suit = suit;
-            //BlackJackValue = Value; 
         }
 
         public override string ToString()
         {
-            char suitChar = Suit.ToString().ToLower()[0];
-
+            int suitCharVal = (int)Enum.GetValues(Suit.GetType()).GetValue((int)Suit);
+            string suitString = DecodeEncodedNonAsciiCharacters($"\\u{suitCharVal}".ToString());
+            char suitChar = Convert.ToChar(suitString);
+            
             switch (Value)
             {
                 case 1: return "A" + suitChar;
@@ -31,6 +34,16 @@ namespace JackJack
                 case 13: return "K" + suitChar;
                 default: return Value.ToString() + suitChar;
             }
+        }
+
+        static string DecodeEncodedNonAsciiCharacters(string value)
+        {
+            return Regex.Replace(
+                value,
+                @"\\u(?<Value>[a-zA-Z0-9]{4})",
+                m => {
+                    return ((char)int.Parse(m.Groups["Value"].Value, NumberStyles.HexNumber)).ToString();
+                });
         }
     }
 }
