@@ -46,12 +46,12 @@ namespace JackJack
             char key;
             while (true)
             {
-                key = (char)Console.ReadKey().Key;
+                key = Console.ReadKey().KeyChar;
 
-                if (key == 'Y')
+                if (key == 'y')
                     Reset();
-                else if (key == 'N')
-                    break;
+                else if (key == 'N' || key == 'n')
+                    Environment.Exit(-1);
             }
         }
 
@@ -65,7 +65,6 @@ namespace JackJack
                 Player.Hand.Add(Deck.Draw());
                 Console.WriteLine($"You have:{Player.ToString()} | {Player.BestValue}");
                 Console.WriteLine("------------------");
-                Console.Write("(H)it | (S)top > ");
 
                 if (Player.BestValue > 21)
                 {
@@ -77,6 +76,7 @@ namespace JackJack
                     Status = GameStatus.BlackJack;
                     return;
                 }
+                Console.Write("(H)it | (S)top > ");
 
 
                 do
