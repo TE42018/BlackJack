@@ -109,10 +109,10 @@ namespace JackJack
             //Status check
             switch (Status)
             {
-                case GameStatus.Won: Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine($"The dealer got {Dealer.HighValue} and lost \nYou gained ${PlayerBet * 0.5}"); Player.Money += (int)(PlayerBet * 0.5); break;
+                case GameStatus.Won: Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine($"The dealer got {Dealer.HighValue} and lost \nYou gained ${(int)(PlayerBet * 0.5)}"); Player.Money += (int)(PlayerBet * 0.5); break;
                 case GameStatus.Lost: Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine($"You got {Player.BestValue} and lost \nYou lost ${PlayerBet}"); Player.Money -= PlayerBet; break;
                 case GameStatus.Tie: Console.WriteLine("You are both losers!"); break;
-                case GameStatus.BlackJack: Console.ForegroundColor = ConsoleColor.Yellow; Console.WriteLine($"You got BLACKJACK! \nYou gained ${PlayerBet*1.5}"); Player.Money += (int)(PlayerBet * 1.5); break;
+                case GameStatus.BlackJack: Console.ForegroundColor = ConsoleColor.Yellow; Console.WriteLine($"You got BLACKJACK! \nYou gained ${(int)(PlayerBet*1.5)}"); Player.Money += (int)(PlayerBet * 1.5); break;
             }
             Console.ForegroundColor = ConsoleColor.Gray;
 
