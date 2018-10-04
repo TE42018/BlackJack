@@ -12,6 +12,6 @@ namespace JackJack
         Lost,
         Playing,
         Tie,
-        BlackJack
+        BlackJack,
     }
 }

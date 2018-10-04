@@ -39,7 +39,7 @@ namespace JackJack
 
         public Player()
         {
-            Money = 50;
+            Money = 75;
             Reset();
         }
 

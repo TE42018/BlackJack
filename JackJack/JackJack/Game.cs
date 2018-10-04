@@ -21,6 +21,12 @@ namespace JackJack
             Reset();
         }
 
+        public void HardReset()
+        {
+            Player = new Player();
+            Reset();
+        }
+
         public void Reset()
         {
 
@@ -44,6 +50,24 @@ namespace JackJack
 
                 Console.Write(errorString);
                 errorString = "";
+                if (Player.Money == 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("You have lost all of your money...");
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.Write("Do you want to start over? (Y)es/(N)o > ");
+                    char resetKey;
+                    while (true)
+                    {
+                        resetKey = Console.ReadKey().KeyChar;
+
+                        if (resetKey == 'y')
+                            HardReset();
+                        else if (resetKey == 'N' || resetKey == 'n')
+                            Environment.Exit(-1);
+                    }
+                }
+
                 Console.WriteLine($"You have: ${Player.Money}");
                 Console.Write($"Place your bet ($2 - $500) > ");
                 do
