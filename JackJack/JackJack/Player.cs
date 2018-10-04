@@ -13,6 +13,7 @@ namespace JackJack
         public int LowValue { get { return Hand.Sum(c=>(c.BlackJackValue)); } }
         public int HighValue { get { return Hand.Sum(c => (c.BlackJackValue > 1 ? c.BlackJackValue : 11)); } }
         public int BestValue { get { return GetBestValue(Hand); } }
+        public int Money { get; set; }
 
         private int GetBestValue(List<Card> hand)
         {
@@ -38,6 +39,7 @@ namespace JackJack
 
         public Player()
         {
+            Money = 50;
             Reset();
         }
 

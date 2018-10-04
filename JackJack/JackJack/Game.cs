@@ -12,36 +12,87 @@ namespace JackJack
         public Player Dealer { get; set; }
         public Deck Deck { get; set; }
         public GameStatus Status { get; set; }
+        public int PlayerBet { get; set; }
 
         public Game()
         {
+            Player = new Player();
+            Dealer = new Player();
             Reset();
         }
 
         public void Reset()
         {
-            Console.Clear();
-            Console.WriteLine("Welcome to JackJack\n");
 
-            Player = new Player();
-            Dealer = new Player();
+            Player.Reset();
+            Dealer.Reset();
             Deck = new Deck(4);
+            PlayerBet = 0;
 
             Status = GameStatus.Playing;
 
+            //Place bets
+
+            string betString = "";
+            string errorString = "";
+            char betKey;
+            do
+            {
+                betString = "";
+                Console.Clear();
+                Console.WriteLine("Welcome to JackJack\n");
+
+                Console.Write(errorString);
+                errorString = "";
+                Console.WriteLine($"You have: ${Player.Money}");
+                Console.Write($"Place your bet ($2 - $500) > ");
+                do
+                {
+                    betKey = Console.ReadKey(true).KeyChar;
+                    // Console.WriteLine(betKey == '\b');
+                    if (betKey == '\b' && betString.Length > 0)
+                    {
+                        betString = "";
+                        break;
+                    }
+                    //Console.WriteLine(Char.IsNumber(betKey));
+                    if (Char.IsNumber(betKey) && (Convert.ToInt32(betKey.ToString()) > 0 || betString.Length > 0))
+                    {
+                        betString += betKey;
+                        Console.Write(betKey);
+                    }
+                    //Console.WriteLine(betString);
+                } while (betKey != '\r');
+                PlayerBet = betString.Length == 0 ? 0 : Convert.ToInt32(betString);
+                if (PlayerBet <= 500 && PlayerBet > Player.Money)
+                    errorString = "You don't have enough money!\n";
+                else if (PlayerBet > 500)
+                    errorString = "The bet was too high!\n";
+                else if (PlayerBet < 2)
+                    errorString = "The bet was too low!\n";
+            } while (errorString.Length != 0);
+
+            Console.WriteLine("\n");
+            
+
+            //Begin game
             Dealer.Hand.Add(Deck.Draw());
 
             Console.WriteLine("The dealer has:" + Dealer.ToString() + " | " + Dealer.HighValue);
             Console.WriteLine("~~~~~~~~~~~~~~~~~~~");
             PlayerDraw();
+
+            //Status check
             switch (Status)
             {
-                case GameStatus.Won: Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine("The dealer got {0} and lost", Dealer.HighValue); break;
-                case GameStatus.Lost: Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine("You got {0} and lost", Player.BestValue); break;
+                case GameStatus.Won: Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine($"The dealer got {Dealer.HighValue} and lost \nYou gained ${PlayerBet * 0.5}"); Player.Money += (int)(PlayerBet * 0.5); break;
+                case GameStatus.Lost: Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine($"You got {Player.BestValue} and lost \nYou lost ${PlayerBet}"); Player.Money -= PlayerBet; break;
                 case GameStatus.Tie: Console.WriteLine("You are both losers!"); break;
-                case GameStatus.BlackJack: Console.ForegroundColor = ConsoleColor.Yellow; Console.WriteLine("You got BLACKJACK!"); break;
+                case GameStatus.BlackJack: Console.ForegroundColor = ConsoleColor.Yellow; Console.WriteLine($"You got BLACKJACK! \nYou gained ${PlayerBet*1.5}"); Player.Money += (int)(PlayerBet * 1.5); break;
             }
             Console.ForegroundColor = ConsoleColor.Gray;
+
+            //Replay or quit
             Console.Write("Do you want to play again? (Y)es/(N)o > ");
             char key;
             while (true)
@@ -81,9 +132,9 @@ namespace JackJack
 
                 do
                 {
-                    key = (char)Console.ReadKey().Key;
+                    key = (char)Console.ReadKey(true).Key;
                 } while (key != 'H' && key != 'S');
-                Console.WriteLine("\n");
+                Console.WriteLine($"{key}\n");
             } while (key == 'h' || key == 'H');
 
 
