@@ -10,7 +10,7 @@ namespace JackJack
     {
         static void Main(string[] args)
         {
-            Console.Title = "\u2665JackJack\u2660";
+            Console.Title = "\u2666\u2665JACKJACK\u2660\u2663";
             Console.OutputEncoding = System.Text.Encoding.Unicode;
             Game game = new Game();
         }
