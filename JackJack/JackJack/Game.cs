@@ -30,16 +30,28 @@ namespace JackJack
             Status = GameStatus.Playing;
 
             Dealer.Hand.Add(Deck.Draw());
-            
+
             Console.WriteLine("The dealer has:" + Dealer.ToString() + " | " + Dealer.HighValue);
             Console.WriteLine("~~~~~~~~~~~~~~~~~~~");
             PlayerDraw();
             switch (Status)
             {
-                case GameStatus.Won: Console.WriteLine("The dealer got {0} and lost", Dealer.HighValue); break;
-                case GameStatus.Lost: Console.WriteLine("You got {0} and lost", Player.BestValue); break;
+                case GameStatus.Won: Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine("The dealer got {0} and lost", Dealer.HighValue); break;
+                case GameStatus.Lost: Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine("You got {0} and lost", Player.BestValue); break;
                 case GameStatus.Tie: Console.WriteLine("You are both losers!"); break;
+                case GameStatus.BlackJack: Console.ForegroundColor = ConsoleColor.Yellow; Console.WriteLine("You got BLACKJACK!"); break;
+            }
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("Do you want to play again? (Y)es/(N)o > ");
+            char key;
+            while (true)
+            {
+                key = (char)Console.ReadKey().Key;
 
+                if (key == 'Y')
+                    Reset();
+                else if (key == 'N')
+                    break;
             }
         }
 
@@ -51,26 +63,30 @@ namespace JackJack
             do
             {
                 Player.Hand.Add(Deck.Draw());
+                Console.WriteLine($"You have:{Player.ToString()} | {Player.BestValue}");
+                Console.WriteLine("------------------");
+                Console.Write("(H)it | (S)top > ");
+
                 if (Player.BestValue > 21)
                 {
                     Status = GameStatus.Lost;
                     return;
                 }
-                if(Player.BestValue == 21)
+                if (Player.BestValue == 21 && Player.Hand.Count == 2)
                 {
-                    Status = GameStatus.Won;
+                    Status = GameStatus.BlackJack;
                     return;
                 }
 
-                Console.WriteLine($"You have:{Player.ToString()} | {Player.BestValue}");
-                Console.WriteLine("------------------");
-                Console.Write("(H)it | (S)top > ");
 
-                do {
+                do
+                {
                     key = (char)Console.ReadKey().Key;
                 } while (key != 'H' && key != 'S');
                 Console.WriteLine("\n");
             } while (key == 'h' || key == 'H');
+
+
             DealerDraw();
         }
 
@@ -79,38 +95,37 @@ namespace JackJack
             do
             {
                 Dealer.Hand.Add(Deck.Draw());
-                System.Threading.Thread.Sleep(2000);
+                System.Threading.Thread.Sleep(1500);
+                Console.WriteLine($"The dealer has:{Dealer.ToString()} | {Dealer.HighValue}");
 
                 if (Dealer.HighValue > 21)
                 {
                     Status = GameStatus.Won;
                     return;
                 }
-                else if (Dealer.HighValue > Player.BestValue)
-                {
-                    Status = GameStatus.Lost;
-                    return;
-                }
-                else if (Dealer.HighValue < Player.BestValue)
-                {
-                    Status = GameStatus.Won;
-                    return;
-                }
-                else if (Dealer.HighValue == Player.BestValue && Dealer.HighValue > 16 && Dealer.HighValue < 20)
-                {
-                    Status = GameStatus.Lost;
-                    return;
-                }
-                else if (Dealer.HighValue == Player.BestValue && Dealer.HighValue == 20)
-                {
-                    Status = GameStatus.Tie;
-                    return;
-                }
-                
 
-                Console.WriteLine($"The dealer has:{Dealer.ToString()} | {Dealer.HighValue}");
             } while (Dealer.HighValue < 17);
-            //Hit until HighValue >= 17
+
+            if (Dealer.HighValue > Player.BestValue)
+            {
+                Status = GameStatus.Lost;
+                return;
+            }
+            else if (Dealer.HighValue < Player.BestValue || Player.BestValue == 21)
+            {
+                Status = GameStatus.Won;
+                return;
+            }
+            else if (Dealer.HighValue == Player.BestValue && Dealer.HighValue > 16 && Dealer.HighValue < 20)
+            {
+                Status = GameStatus.Lost;
+                return;
+            }
+            else if (Dealer.HighValue == Player.BestValue && Dealer.HighValue == 20)
+            {
+                Status = GameStatus.Tie;
+                return;
+            }
         }
     }
 }

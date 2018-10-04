@@ -15,7 +15,7 @@ namespace JackJack
 
             //game.PlayerDraw();
 
-            Console.ReadLine();
+            //Console.ReadLine();
         }
     }
 }
