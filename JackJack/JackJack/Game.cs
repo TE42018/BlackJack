@@ -50,10 +50,10 @@ namespace JackJack
 
                 Console.Write(errorString);
                 errorString = "";
-                if (Player.Money == 0)
+                if (Player.Money < 2)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("You have lost all of your money...");
+                    Console.WriteLine("You don't have enough money to play...");
                     Console.ForegroundColor = ConsoleColor.Gray;
                     Console.Write("Do you want to start over? (Y)es/(N)o > ");
                     char resetKey;
